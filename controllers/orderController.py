@@ -16,5 +16,7 @@ def save(): #always name the controller the same as the service it recruits
 
 @cache.cached(timeout=60) #caches the response for 60 seconds
 def find_all():
-    all_orders = orderService.find_all()
+    page= request.args.get('page')
+    per_page = request.args.get('per_page')
+    all_orders = orderService.find_all(page, per_page)
     return orders_schema.jsonify(all_orders), 200 #send them the list of customers and a 200 success status code

@@ -13,9 +13,9 @@ def save(product_data):
     db.session.refresh(new_product) #refresh the session with the new product
     return new_product #return the new product
 
-def find_all():
+def find_all(page=1, per_page=10):
     query = select(Product) #select all products
-    all_products = db.session.execute(query).scalars().all() #execute the query and get all the products
+    all_products = db.paginate(query, page=int(page,), per_page=int(per_page))#execute the query and get all the products
     
     return all_products #return all the productss
 

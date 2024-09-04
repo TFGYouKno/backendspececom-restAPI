@@ -11,9 +11,9 @@ def save(customer_data):
     db.session.refresh(new_customer) #refresh the session with the new customer
     return new_customer #return the new customer
 
-def find_all():
+def find_all(page=1, per_page=10):
     query = select(Customer) #select all customers
-    all_customers = db.session.execute(query).scalars().all() #execute the query and get all the customers
+    all_customers = db.paginate(query, page=int(page), per_page=int(per_page)) #execute the query and get all the customers
     
     return all_customers #return all the customers
 
