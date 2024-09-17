@@ -15,7 +15,8 @@ def save(product_data):
 
 def find_all(page=1, per_page=10):
     query = select(Product) #select all products
-    all_products = db.paginate(query, page=int(page,), per_page=int(per_page))#execute the query and get all the products
+    all_products = db.paginate(query, page=int(page,), per_page=int(per_page)) 
+    #to execute a query with pagination, the url model looks like this: customers/?page=1&per_page=10
     
     return all_products #return all the productss
 

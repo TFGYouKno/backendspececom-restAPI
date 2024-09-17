@@ -1,10 +1,11 @@
 from database import db #services interact directly with the database
 from models.customer import Customer #need to create customer objects
 from sqlalchemy import select #so we can query our database
+from utils.util import encode_role_token #to encode the token
 
 def save(customer_data):
     
-    new_customer = Customer(name=customer_data['name'], email=customer_data['email'], phone=customer_data['phone'], username=customer_data['username'], password=customer_data['password']) #create a new customer object
+    new_customer = Customer(name=customer_data['name'], email=customer_data['email'], phone=customer_data['phone'], username=customer_data['username'], password=customer_data['password'], admin=customer_data['admin']) #create a new customer object
     db.session.add(new_customer) #add the new customer to the session
     db.session.commit() #commit the new customer to the database
     
@@ -53,3 +54,13 @@ def delete(id):
     db.session.commit() #commit the deletion of the customer
     
     return customer #return the deleted customer
+
+def login(credentials):
+    query = select(Customer).where(Customer.email == credentials['email']) #select the customer with the given username and password
+    customer = db.session.execute(query).scalar_one_or_none() #execute the query and get the customer with the given username and password
+
+    if customer and customer.password == credentials['password']:
+        auth_token = encode_role_token(customer.id, customer.admin) #return the customer with the given username and password
+        return auth_token #return the customer with the given username and password
+    
+    return None #return None if the customer does not exist or the password is incorrect

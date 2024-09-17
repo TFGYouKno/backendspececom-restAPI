@@ -1,6 +1,6 @@
 from flask import Blueprint
 
-from controllers.customerController import save, find_all, find_by_id, update, delete
+from controllers.customerController import save, find_all, find_by_id, update, delete, login
 
 customer_blueprint = Blueprint('customer', __name__)
 
@@ -15,3 +15,5 @@ customer_blueprint.route('/<int:id>', methods=['GET'])(find_by_id) #when a GET r
 customer_blueprint.route('/<int:id>', methods=['PUT'])(update) #when a PUT request is made to /customers/<id>, run the update function in the customerController
 
 customer_blueprint.route('/<int:id>', methods=['DELETE'])(delete) #when a DELETE request is made to /customers/<id>, run the delete function in the customerController
+
+customer_blueprint.route('/login', methods=['POST'])(login) #when a POST request is made to /customers/login, run the login function in the customerController

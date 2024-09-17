@@ -11,6 +11,11 @@ class Customer(Base): #creating our customer model that inherits from Base
     phone: Mapped[str] = mapped_column(db.String(25), nullable=False) #phone column, not nullable
     username: Mapped[str] = mapped_column(db.String(50), nullable=False, unique=True) #username column, not nullable, must be unique
     password: Mapped[str] = mapped_column(db.String(255), nullable=False) #password column, not nullable
+    admin: Mapped[int] = mapped_column(db.Integer, nullable=False) #admin column, default]
 
     #one to many relationship, one customer can have many orders
     orders: Mapped[List['Order']] = db.relationship(back_populates='customer')
+    
+    cart: Mapped[List['Product']] = db.relationship("Product", secondary="customer_cart", back_populates="customers") #many to many relationship, many customers can have many products in their cart
+    
+    

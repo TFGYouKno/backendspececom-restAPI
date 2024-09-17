@@ -11,3 +11,5 @@ class Product(Base): #creating our product model that inherits from Base
     price: Mapped[str] = mapped_column(db.String, nullable=False) #price column, not nullable, 
     
     orders: Mapped[List['Order']] = db.relationship(secondary=order_product)
+    
+    customers: Mapped[List['Customer']] = db.relationship("Customer", secondary="customer_cart", back_populates="cart") #many to many relationship, many customers can have many products in their cart
