@@ -15,6 +15,8 @@ from models.orderProduct import order_product
 from routes.customerBP import customer_blueprint
 from routes.orderBP import order_blueprint
 from routes.productBP import product_blueprint
+from routes.cartBP import cart_blueprint
+
 
 def create_app(config_name):
 
@@ -32,6 +34,7 @@ def blueprint_config(app):
     app.register_blueprint(customer_blueprint, url_prefix="/customers") #register the customer blueprint
     app.register_blueprint(order_blueprint, url_prefix="/orders") #register the order blueprint
     app.register_blueprint(product_blueprint, url_prefix="/products") #register the product blueprint
+    app.register_blueprint(cart_blueprint, url_prefix="/cart") #register the cart blueprint
 
 def rate_limiter_config(app):
     limiter.init_app(app) #initialize the limiter with the app

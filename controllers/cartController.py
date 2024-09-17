@@ -44,12 +44,12 @@ def add_to_cart(token_id):
     
     try:
         added_product = cartService.add_items_to_cart(token_id, cart_data)
-        return jsonify("message": "Added to cart!"), 201
+        return jsonify({"message": "Added to cart!"}), 201
     except ValueError as e:
         return jsonify({"error": str(e)}), 400
     
 @user_validation
-def remove_from_cart(token_id):
+def remove_item_from_cart(token_id):
     try:
         cart_data = request.json
         if "product_ids" not in cart_data:
