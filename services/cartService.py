@@ -43,24 +43,20 @@ def remove_item_from_cart(customer_id, cart_data):
     db.session.commit()
 
 def view_cart(customer_id):
-    query = (
-        select(Product.id, Product.product_name, Product.price)
-        .select_from(customer_cart.join(Product, customer_cart.c.product_id == Product.id))
-        .where(customer_cart.c.customer_id == customer_id)
-        )
+    query = select(Customer).where(Customer.id == customer_id)
+    customer = db.session.execute(query).scalar_one_or_none()
+    print(f"Query result: {customer.cart}")
+    return customer.cart
 
-    all_cart_items = db.session.execute(query).fetchall()
-    print(f"Query result: {all_cart_items}")
-
-    cart_items = []
-    for row in all_cart_items:
-        item = {
-            "id": row.id, 
-            "name": row.product_name,
-            "price": row.price
-            }
-        cart_items.append(item)
-        return cart_items
+    #cart_items = []
+    #for row in customer:
+       # item = {
+            #"id": row.id, 
+           # "name": row.product_name,
+           # "price": row.price
+          #  }
+       # cart_items.append(item)
+        #return cart_items
     
 def empty_cart(customer_id):
     customer = get_customer(customer_id)
@@ -73,14 +69,14 @@ def place_order(customer_id):
     if not customer.cart:
         raise ValueError("Cart is empty")
         
-    new_order = Order(customer_id=customer_id, order_date=date.today())
+    new_order = Order(customer_id=customer_id, date=date.today())
 
     for product in customer.cart:
         new_order.products.append(product)
 
-        customer.cart.clear()
+    customer.cart.clear()
 
-        db.session.add(new_order)
-        db.session.commit()
+    db.session.add(new_order)
+    db.session.commit()
 
-        return new_order
+    return new_order

@@ -1,5 +1,5 @@
 from flask import request, jsonify
-from models.schema.cartSchema import cart_schema, carts_schema
+from models.schema.cartSchema import cart_schema, carts_schema, view_cart_schema
 
 from services import cartService
 from marshmallow import ValidationError
@@ -16,7 +16,7 @@ def view_cart(token_id):
     except Exception as e:
         return jsonify({'message': str(e)}), 400
     
-    return jsonify(cart_items), 200
+    return view_cart_schema.jsonify({"products": cart_items}), 200
 
 @user_validation
 def place_order(token_id):

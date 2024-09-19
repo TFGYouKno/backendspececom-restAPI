@@ -16,7 +16,9 @@ def save(): #always name the controller the same as the service it recruits
     return customer_schema.jsonify(customer), 201 #send them  the customer object and a 201 success status code
 
 #@cache.cached(timeout=60) #caches the response for 60 seconds
-@token_required
+
+#@token_required
+
 def find_all():
     page = request.args.get('page')
     per_page = request.args.get('per_page')
